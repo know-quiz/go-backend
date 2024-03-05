@@ -96,3 +96,17 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+
+
+
+      - name: Authenticate Google Cloud Run Service
+        uses: 'google-github-actions/auth@v2'
+        with:
+          workload_identity_provider: 'projects/734281922065/locations/global/workloadIdentityPools/github-actions-cloud-run/providers/github'
+          service_account: 'github-deploy@quiz-app-415922.iam.gserviceaccount.com'
+
+      - name: Deploy to Google Cloud Run
+        uses: 'google-github-actions/deploy-cloudrun@v2'
+        with:
+          image: 'ghcr.io/know-quiz/go-backend'
+          service: 'go-backend'  

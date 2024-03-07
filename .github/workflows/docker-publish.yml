@@ -124,15 +124,6 @@ jobs:
           tags: |
             ${{ vars.REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/${{ vars.ARTIFACT_REPO }}/${{ vars.SERVICE_NAME }}    
 
-      - name: Create Service declaration   
-        run: |-
-          export CONTAINER_IMAGE="${{ vars.REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/${{ vars.ARTIFACT_REPO }}/${{ vars.SERVICE_NAME }}"
-          export SERVICE_NAME="${{ vars.SERVICE_NAME }}"
-          export PROJECT_ID="${{ vars.GCP_PROJECT_ID }}"
-          #export REVISION_TAG="${{ inputs.ref }}"
-          export CLOUD_RUN_SA="${{ vars.CLOUD_RUN_SA }}"
-          envsubst < ./service-yaml/container.yaml > container.yaml
-          cat container.yaml
 
       - name: Deploy to Google Cloud Run
         uses: 'google-github-actions/deploy-cloudrun@v2'

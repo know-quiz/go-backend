@@ -119,7 +119,7 @@ jobs:
         id: build-image
         uses: docker/build-push-action@v3
         with:
-          context: ${{ vars.code_directory }}
+          #context: ${{ vars.code_directory }}
           push: true 
           tags: |
             ${{ vars.REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/${{ vars.ARTIFACT_REPO }}/${{ vars.SERVICE_NAME }}    
@@ -129,7 +129,7 @@ jobs:
           export CONTAINER_IMAGE="${{ vars.REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/${{ vars.ARTIFACT_REPO }}/${{ vars.SERVICE_NAME }}"
           export SERVICE_NAME="${{ vars.SERVICE_NAME }}"
           export PROJECT_ID="${{ vars.GCP_PROJECT_ID }}"
-          export REVISION_TAG="${{ inputs.ref }}"
+          #export REVISION_TAG="${{ inputs.ref }}"
           export CLOUD_RUN_SA="${{ vars.CLOUD_RUN_SA }}"
           envsubst < ./service-yaml/container.yaml > container.yaml
           cat container.yaml

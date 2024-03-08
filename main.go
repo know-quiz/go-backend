@@ -8,9 +8,6 @@ import (
 	"net/http"
 	"os"
 
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
-
 	"cloud.google.com/go/firestore"
 	"google.golang.org/api/option"
 )
@@ -23,27 +20,6 @@ type Question struct {
 	Option3  string `json:"option3"`
 	Option4  string `json:"option4"`
 	Answer   string `json:"answer"`
-}
-
-var client *mongo.Client
-
-func getQuestions(w http.ResponseWriter, r *http.Request) {
-	var questions []Question
-	collection := client.Database("quiz_app").Collection("questions")
-	ctx := context.TODO()
-	cursor, err := collection.Find(ctx, bson.M{})
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	defer cursor.Close(ctx)
-	for cursor.Next(ctx) {
-		var question Question
-		cursor.Decode(&question)
-		questions = append(questions, question)
-	}
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(questions)
 }
 
 func getFireStoreQuestions(w http.ResponseWriter, r *http.Request) {
@@ -91,12 +67,7 @@ func getFireStoreQuestions(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	/*var err error
-	client, err = mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb+srv://app_user:h1yTCK2XApBjAhDu@main.zyalogv.mongodb.net/?retryWrites=true&w=majority&appName=Main"))
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer client.Disconnect(context.TODO())*/
+	// Create a new HTTP server
 	http.HandleFunc("/api/questions", getFireStoreQuestions)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

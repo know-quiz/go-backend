@@ -26,6 +26,10 @@ WORKDIR /root/
 # Copy the Pre-built binary file from the previous stage
 COPY --from=builder /app/main .
 
+ARG GCP_CREDS_JSON_BASE64
+# Set the base64-encoded service account JSON as an environment variable
+ENV GCP_CREDS_JSON_BASE64=${GCP_CREDS_JSON_BASE64}
+
 # Expose port 8080 to the outside world
 EXPOSE 8080
 

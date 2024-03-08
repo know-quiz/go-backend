@@ -15,4 +15,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
+      env: 
+        GCP_CREDS_JSON_BASE64: ${{ secrets.GCP_CREDS_JSON_BASE64 }}
       run: docker build . --file Dockerfile --tag quiz-app:$(date +%s)

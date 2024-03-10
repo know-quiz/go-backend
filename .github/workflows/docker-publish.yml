@@ -82,11 +82,12 @@
             push: true
             tags: >
               ${{ vars.REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/${{
-              vars.ARTIFACT_REPO }}/${{ vars.SERVICE_NAME }}    
+              vars.ARTIFACT_REPO }}/${{ vars.SERVICE_NAME }}
+            build-args: |
+              GCP_CREDS_JSON_BASE64=${{ secrets.GCP_CREDS_JSON_BASE64 }}      
         - name: Deploy to Google Cloud Run
           uses: google-github-actions/deploy-cloudrun@v2
           with:
             region: ${{ vars.REGION }}
             service: ${{ vars.SERVICE_NAME }}
-            metadata: container.yaml
   

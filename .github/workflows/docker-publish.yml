@@ -43,24 +43,6 @@
           uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934
           with:
             images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-        - name: Build and push Docker image
-          id: build-and-push
-          uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09
-          with:
-            context: .
-            push: ${{ github.event_name != 'pull_request' }}
-            tags: ${{ steps.meta.outputs.tags }}
-            labels: ${{ steps.meta.outputs.labels }}
-            cache-from: type=gha
-            cache-to: type=gha,mode=max
-            build-args: |
-              GCP_CREDS_JSON_BASE64=${{ secrets.GCP_CREDS_JSON_BASE64 }}
-        - name: Sign the published Docker image
-          if: ${{ github.event_name != 'pull_request' }}
-          env:
-            TAGS: ${{ steps.meta.outputs.tags }}
-            DIGEST: ${{ steps.build-and-push.outputs.digest }}
-          run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
         - name: Authenticate Google Cloud Run Service
           id: auth
           uses: google-github-actions/auth@v2
@@ -90,4 +72,5 @@
           with:
             region: ${{ vars.REGION }}
             service: ${{ vars.SERVICE_NAME }}
+            image: '${{ vars.REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/${{vars.ARTIFACT_REPO }}/${{ vars.SERVICE_NAME }}'
   

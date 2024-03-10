@@ -13,7 +13,7 @@ import (
 )
 
 type Question struct {
-	ID       string `json:"id" bson:"_id,omitempty"`
+	ID       string `json:"id"`
 	Question string `json:"question"`
 	Option1  string `json:"option1"`
 	Option2  string `json:"option2"`
@@ -55,6 +55,7 @@ func getFireStoreQuestions(w http.ResponseWriter, r *http.Request) {
 			log.Printf("Failed to marshal document to struct: %v", err)
 			continue
 		}
+		question.ID = string(doc.Ref.ID)
 		questions = append(questions, question)
 	}
 

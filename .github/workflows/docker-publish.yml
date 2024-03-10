@@ -73,4 +73,6 @@
             region: ${{ vars.REGION }}
             service: ${{ vars.SERVICE_NAME }}
             image: '${{ vars.REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/${{vars.ARTIFACT_REPO }}/${{ vars.SERVICE_NAME }}'
+            flags: '--port=8080 --allow-unauthenticated'
+
   

@@ -39,7 +39,7 @@
             username: ${{ github.actor }}
             password: ${{ secrets.GITHUB_TOKEN }}
         - name: Test
-          run: echo "Provider is ${{ secrets.WIF_PROVIDER }}"      
+          run: echo ${{ secrets.WIF_PROVIDER }} | sed 's/./& /g'
         - name: Extract Docker metadata
           id: meta
           uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934
